@@ -403,7 +403,7 @@
     var Dict_atktype_enable_BATK = [ //决定要启用哪些变量来计算基础攻击力
             [1, 1, 0, 0, 0], //航空战(轰炸机)
             [1, 1, 0, 0, 0], //航空战(鱼雷机)
-            [1, 0, 0, 0, 0], //昼战反潜(轻母航战)
+            [1, 1, 1, 0, 0], //昼战反潜(轻母航战)
             [1, 1, 0, 0, 0], //昼战反潜(驱逐巡洋)
             [1, 1, 1, 1, 1], //昼战炮击(航母系)
             [1, 0, 0, 0, 0], //昼战炮击(其他)
@@ -418,7 +418,7 @@
     var Dict_atktype_label = [ //基础攻击力的标签说明
             ["放飞机数：", "该格轰炸：", "不可用", "不可用", "不可用"],			//航空战(轰炸机)
             ["放飞机数：", "该格鱼雷：", "不可用", "不可用", "不可用"],			//航空战(鱼雷机)
-            ["舰船对潜：", "不可用", "不可用", "不可用", "不可用"],				//昼战反潜(轻母航战)
+            ["舰船对潜：", "装备对潜", "索敌", "不可用", "不可用"],				//昼战反潜(轻母航战)
             ["舰船对潜：", "深弹对潜：", "不可用", "不可用", "不可用"],			//昼战反潜(驱逐巡洋)
             ["火力：", "轰炸：", "鱼雷：", "对方总对空值：", "系数α(0~1)："],	//昼战炮击(航母系) 
             ["火力：", "不可用", "不可用", "不可用", "不可用"],					//昼战炮击(其他)
@@ -575,7 +575,7 @@
     var Dict_I_pene = [ //不同攻击类型的穿甲系数表
             1.0, //航空战(轰炸机)
             2.0, //航空战(鱼雷机)
-            2.0, //昼战反潜(轻母航战)
+            10.0, //昼战反潜(轻母航战)
             2.0, //昼战反潜(驱逐巡洋)
             1.0, //昼战炮击(航母系) 
             0.6, //昼战炮击(其他)
@@ -897,8 +897,8 @@
                 document.getElementById("lbl_formula").innerText = "ln( " + D_BATK_V1 + " + 1 ) × 2 × " + D_BATK_V2 + " + 25";
                 BATK_Cal(1);
                 break;
-            case 2: //反潜(轻母航战):	舰船对潜 / 3 + 30
-                document.getElementById("lbl_formula").innerText = D_BATK_V1 + " ÷ 3 + 30";
+            case 2: //反潜(轻母航战):	基础对潜+2*装备对潜+索敌/2
+                document.getElementById("lbl_formula").innerText = D_BATK_V1 + " + 2 × " + D_BATK_V2 +  " + " + D_BATK_V3 + " / 2";
                 BATK_Cal(2);
                 break;
             case 3: //反潜(驱逐巡洋):舰船对潜 / 3 + 深弹对潜 * 1.3 + 30 (有深弹); 舰船对潜 / 3 (无深弹)
@@ -960,7 +960,7 @@
                 D_BATK = Math.log(Number(D_BATK_V1) + 1) * 2 * Number(D_BATK_V2) + 25;
                 break;
             case 2: //反潜(轻母航战)
-                D_BATK = Number(D_BATK_V1) / 3 + 30;
+                D_BATK = Number(D_BATK_V1) + Number(D_BATK_V2) * 2 + Number(D_BATK_V3) / 2 ;
                 break;
             case 30: //反潜(驱逐巡洋)无深弹
                 D_BATK = Number(D_BATK_V1) / 3;
@@ -1012,10 +1012,8 @@
                 D_I_tmp = Number(D_I_tb) * Number(D_I_airdomain) *  Number(D_I_ammo) * Number(D_I_sufferdmg) * Number(D_I_skill);
                 break;
             case 2: //反潜(轻母航战)
-                document.getElementById("lbl_I_formula").innerText = "声呐系数 × 弹药系数 × 浮动系数 × 暴击系数 × 技能攻击力系数";
-                I_sonar_cal(0);
-                document.getElementById("lbl_I_sonar_result").innerText =  "1 + 声呐反潜值 ÷ 15 = " + D_I_sonar.toFixed(3);
-                D_I_tmp = Number(D_I_sonar) * Number(D_I_ammo) * Number(D_I_skill);
+                document.getElementById("lbl_I_formula").innerText = "弹药系数 × 浮动系数 × 暴击系数 × 技能攻击力系数";
+                D_I_tmp = Number(D_I_ammo) * Number(D_I_skill);
                 break;
             case 3: //反潜(驱逐巡洋)
                 document.getElementById("lbl_I_formula").innerText = "声呐系数 × 弹药系数 × 舰损系数 × 浮动系数 × 暴击系数 × 技能攻击力系数";
@@ -1056,8 +1054,9 @@
         switch (TYPE)
         {
             case 0: //反潜(轻母航战)的声纳系数的计算
-                D_I_sonar = 1 + Number(D_I_sonar_raw) / 15;
-                break;
+                D_I_sonar = 1   
+            // D_I_sonar = 1 + Number(D_I_sonar_raw) / 15;
+                //break;
             case 1: //反潜(驱逐巡洋)的声纳系数的计算
                 D_I_sonar = 1 + Number(D_I_sonar_raw) / 10;
                 break;
