@@ -1,5 +1,6 @@
 ### WSGR 伤害计算器 V1.4
-
+#### 地址
+[伤害计算器](https://huan-yp.github.io/WSGR-Damage-Calculator/index.html)
 #### 使用方式：
 
 按照提示填写数据计算。
