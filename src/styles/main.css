@@ -1,0 +1,960 @@
+/* ===== 全局样式重置 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  font-family: 'Microsoft YaHei', 'PingFang SC', Arial, sans-serif;
+  font-size: 14px;
+  color: #e4e4e4;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ===== 应用容器 ===== */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== 顶部导航栏 ===== */
+.header {
+  background: rgba(15, 52, 96, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  font-size: 28px;
+}
+
+.logo h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.version {
+  font-size: 12px;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #aaa;
+}
+
+.nav {
+  display: flex;
+  gap: 5px;
+}
+
+.nav-link {
+  color: #b0b0b0;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+  color: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* ===== 页面标题区域 ===== */
+.page-header {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.page-header-content h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.page-header-content p {
+  color: #aaa;
+  font-size: 16px;
+}
+
+/* ===== 主内容区 ===== */
+.main {
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  width: 100%;
+}
+
+.calculator-main {
+  padding: 20px;
+}
+
+/* ===== 计算器布局 ===== */
+.calculator-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ===== 卡片样式 ===== */
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.card-icon {
+  font-size: 18px;
+}
+
+.card-subtitle {
+  font-size: 12px;
+  color: #888;
+  margin-left: auto;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* ===== 表单样式 ===== */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #b0b0b0;
+  font-size: 13px;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.form-select {
+  background: rgba(30, 60, 100, 0.6);
+  color: #e4e4e4;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23e4e4e4' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 35px;
+}
+
+.form-select option {
+  background: #1a3a4a;
+  color: #e4e4e4;
+}
+
+.form-select option:checked {
+  background: linear-gradient(#667eea, #667eea);
+  background-color: #667eea;
+  color: #fff;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.form-input::placeholder {
+  color: #666;
+}
+
+.form-input-sm {
+  width: 100px;
+}
+
+.form-input.small {
+  width: 80px;
+}
+
+/* ===== 系数区域样式 ===== */
+.coeff-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.coeff-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.coeff-title {
+  display: block;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.coeff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.coeff-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.coeff-item label {
+  font-size: 12px;
+  color: #888;
+}
+
+/* ===== 参数网格 ===== */
+.params-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.param-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.param-item label {
+  font-size: 13px;
+  color: #b0b0b0;
+}
+
+/* ===== Radio/Checkbox 样式 ===== */
+.radio-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.radio-item,
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.radio-item:hover,
+.checkbox-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.radio-item input,
+.checkbox-item input {
+  accent-color: #667eea;
+}
+
+.radio-item span,
+.checkbox-item span {
+  font-size: 13px;
+  color: #ccc;
+}
+
+/* ===== 公式显示 ===== */
+.formula-display {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 6px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 13px;
+  color: #b0b0b0;
+}
+
+.formula-display.small {
+  font-size: 12px;
+  padding: 8px 10px;
+}
+
+/* ===== 结果框 ===== */
+.result-box {
+  background: rgba(102, 126, 234, 0.15);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.result-box.compact {
+  padding: 12px 15px;
+}
+
+.result-label {
+  color: #b0b0b0;
+  font-size: 14px;
+}
+
+.result-value {
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
+}
+
+.result-value.highlight {
+  color: #f5a623;
+}
+
+/* ===== 按钮样式 ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-large {
+  width: 100%;
+  padding: 15px 24px;
+  font-size: 16px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-icon {
+  font-size: 18px;
+}
+
+/* ===== 结果文本区域 ===== */
+.result-textarea {
+  width: 100%;
+  min-height: 300px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #e4e4e4;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.result-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+/* ===== 提示文本 ===== */
+.hint {
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.help-note {
+  margin-top: 15px;
+  padding: 12px;
+  background: rgba(255, 193, 7, 0.1);
+  border-left: 3px solid #ffc107;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #ffd54f;
+}
+
+/* ===== 帮助列表 ===== */
+.help-list {
+  list-style: none;
+  padding: 0;
+}
+
+.help-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.help-list li:last-child {
+  border-bottom: none;
+}
+
+.help-list strong {
+  color: #fff;
+}
+
+/* ===== 行内输入 ===== */
+.inline-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inline-input span {
+  color: #b0b0b0;
+  font-size: 13px;
+}
+
+/* ===== 页脚 ===== */
+.footer {
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.footer p {
+  color: #888;
+  font-size: 13px;
+  margin: 5px 0;
+}
+
+.footer a {
+  color: #667eea;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #764ba2;
+}
+
+/* ===== 首页特殊样式 ===== */
+.hero {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.hero-title {
+  font-size: 48px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  color: #aaa;
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
+.feature-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.feature-card h3 {
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  color: #888;
+  font-size: 14px;
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 1024px) {
+  .calculator-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    height: auto;
+    padding: 15px 20px;
+    gap: 15px;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-link {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .page-header-content h2 {
+    font-size: 22px;
+  }
+
+  .params-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .hero-subtitle {
+    font-size: 15px;
+  }
+}
+
+/* ===== 动画效果 ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ===== 滚动条样式 ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== 选项卡样式 ===== */
+.result-tabs {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.result-tab {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #b0b0b0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 13px;
+}
+
+.result-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.result-tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
+  color: #fff;
+}
+
+.result-tab-content {
+  min-height: 200px;
+}
+
+.result-tab-panel {
+  display: none;
+}
+
+.result-tab-panel.active {
+  display: block;
+}
+
+.result-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #888;
+}
+
+.placeholder-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.result-placeholder p {
+  font-size: 14px;
+}
+
+/* ===== 结果表格样式 ===== */
+.result-table-wrapper {
+  margin-bottom: 20px;
+}
+
+.result-table-title {
+  font-size: 15px;
+  color: #fff;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  border-left: 3px solid #667eea;
+  font-weight: 600;
+}
+
+.result-table-subtitle {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 10px;
+  padding-left: 13px;
+}
+
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.result-table th,
+.result-table td {
+  padding: 8px 10px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-table thead th {
+  background: rgba(102, 126, 234, 0.2);
+  color: #fff;
+  font-weight: 500;
+}
+
+.result-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.result-table tbody tr:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.result-table .row-header {
+  background: rgba(118, 75, 162, 0.2);
+  color: #ddd;
+  font-weight: 500;
+  text-align: left;
+}
+
+.result-table .value-damage {
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.result-table .value-good {
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.result-table .value-na {
+  color: #666;
+  font-style: italic;
+}
+
+.result-table .value-percent {
+  color: #b0b0b0;
+}
+
+.result-table .value-percent-high {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.result-table .value-percent-mid {
+  color: #fbbf24;
+  font-weight: 500;
+}
+
+.result-table .value-percent-low {
+  color: #4ade80;
+}
+
+/* ===== 结果信息区域 ===== */
+.result-info {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.result-info p {
+  margin-bottom: 5px;
+}
+
+.result-info p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== 系数徽章样式 ===== */
+.coeff-badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.coeff-badge {
+  background: rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  color: #b0b0b0;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.coeff-display-section {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.coeff-display-title {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* ===== 技能和暴击系数同行布局 ===== */
+.coeff-section-row {
+  display: flex;
+  gap: 20px;
+}
+
+.coeff-half {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .coeff-section-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* ===== 航空战减伤区域 ===== */
+.airstrike-section {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-divider {
+  display: block;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 15px;
+  font-size: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+.airstrike-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.airstrike-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.airstrike-item label {
+  font-size: 13px;
+  color: #b0b0b0;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 22px;
+}
+
+.checkbox-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #667eea;
+  cursor: pointer;
+}
+
+.checkbox-row label {
+  font-size: 13px;
+  color: #b0b0b0;
+  cursor: pointer;
+}
+
+.airstrike-result {
+  background: rgba(102, 126, 234, 0.15);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.airstrike-result-label {
+  font-size: 13px;
+  color: #b0b0b0;
+}
+
+.airstrike-result-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #667eea;
+}
+
+@media (max-width: 768px) {
+  .airstrike-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .checkbox-row {
+    padding-top: 10px;
+  }
+}

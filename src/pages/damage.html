@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>伤害计算器 - WSGR 计算器</title>
+</head>
+<body>
+  <div class="app">
+    <!-- 顶部导航栏 -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-icon">⚓</span>
+          <h1>WSGR 计算器</h1>
+          <span class="version">v2.0</span>
+        </div>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">首页</a>
+          <a href="damage.html" class="nav-link active">伤害计算</a>
+          <a href="limit.html" class="nav-link">属性下限</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- 页面标题 -->
+    <div class="page-header">
+      <div class="page-header-content">
+        <h2>💥 伤害计算器</h2>
+        <p>计算各类攻击的伤害值、穿深伤害、击破概率</p>
+      </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="main calculator-main">
+      <form id="calculator-form" class="calculator-layout">
+        <!-- 左侧面板：输入区域 -->
+        <div class="panel panel-left">
+          <!-- 攻击类型选择 -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon">⚙️</span>
+              <h3>攻击类型</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>选择攻击类型</label>
+                <select id="attack-type" class="form-select"></select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 基础攻击力计算 -->
+          <div id="damage-calc" class="card">
+            <div class="card-header">
+              <span class="card-icon">⚔️</span>
+              <h3>基础攻击力</h3>
+            </div>
+            <div class="card-body">
+              <div class="batk-inputs">
+                <div class="batk-input-group">
+                  <label id="lbl-batk-v1">V1:</label>
+                  <input id="batk-v1" type="text" class="form-input" placeholder="数值" />
+                </div>
+                <div class="batk-input-group">
+                  <label id="lbl-batk-v2">V2:</label>
+                  <input id="batk-v2" type="text" class="form-input" placeholder="数值" />
+                </div>
+                <div class="batk-input-group">
+                  <label id="lbl-batk-v3">V3:</label>
+                  <input id="batk-v3" type="text" class="form-input" placeholder="数值" />
+                </div>
+                <div class="batk-input-group">
+                  <label id="lbl-batk-v4">V4:</label>
+                  <input id="batk-v4" type="text" class="form-input" placeholder="数值" />
+                </div>
+                <div class="batk-input-group">
+                  <label id="lbl-batk-v5">V5:</label>
+                  <input id="batk-v5" type="text" class="form-input" placeholder="数值" />
+                </div>
+              </div>
+              <div class="result-box">
+                <div class="result-row">
+                  <span class="result-label">计算公式：</span>
+                  <span id="lbl-formula" class="result-formula">--</span>
+                </div>
+                <div class="result-row">
+                  <span class="result-label">基础攻击力：</span>
+                  <span id="lbl-batk-result" class="result-value highlight">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 系数设置 -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon">📐</span>
+              <h3>乘积系数</h3>
+            </div>
+            <div class="card-body">
+              <div class="formula-info">
+                <label>计算公式：</label>
+                <span id="lbl-i-formula">--</span>
+              </div>
+
+              <!-- 制空系数 -->
+              <div class="coeff-section" id="coeff-airdomain">
+                <label class="coeff-title">制空系数</label>
+                <div class="radio-grid">
+                  <label class="radio-item">
+                    <input type="radio" name="airdomain" value="0" />
+                    <span>占据 1.10</span>
+                  </label>
+                  <label class="radio-item">
+                    <input type="radio" name="airdomain" value="1" />
+                    <span>优势 1.05</span>
+                  </label>
+                  <label class="radio-item">
+                    <input type="radio" name="airdomain" value="2" checked />
+                    <span>均势 1.0</span>
+                  </label>
+                  <label class="radio-item">
+                    <input type="radio" name="airdomain" value="3" />
+                    <span>劣势 0.95</span>
+                  </label>
+                  <label class="radio-item">
+                    <input type="radio" name="airdomain" value="4" />
+                    <span>丧失 0.90</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- 声纳系数 -->
+              <div class="coeff-section" id="coeff-sonar" style="display: none">
+                <label class="coeff-title">声纳系数</label>
+                <div class="inline-input">
+                  <span>声纳装备反潜值：</span>
+                  <input id="i-sonar" type="text" class="form-input small" />
+                  <span class="result-hint" id="lbl-i-sonar-result">None</span>
+                </div>
+              </div>
+
+              <!-- 弹药系数 -->
+              <div class="coeff-section" id="coeff-ammo">
+                <label class="coeff-title">弹药系数</label>
+                <div class="inline-input">
+                  <span>弹药百分数(0~120)：</span>
+                  <input id="i-ammo" type="text" class="form-input small" value="100" />
+                  <span class="result-hint" id="lbl-i-ammo-result">None</span>
+                </div>
+              </div>
+
+              <!-- 鱼雷机系数 -->
+              <div class="coeff-section" id="coeff-tb" style="display: none">
+                <label class="coeff-title">鱼雷机系数</label>
+                <div class="inline-input">
+                  <span>系数(0.5~1)：</span>
+                  <input id="i-tb" type="text" class="form-input small" value="0" />
+                </div>
+              </div>
+
+              <!-- 舰损系数 -->
+              <div class="coeff-section" id="coeff-damage" style="display: none">
+                <label class="coeff-title">舰损系数</label>
+                <div class="radio-grid">
+                  <label class="radio-item">
+                    <input type="radio" name="shipdamage" value="0" checked />
+                    <span>未中破 1.0</span>
+                  </label>
+                  <label class="radio-item">
+                    <input type="radio" name="shipdamage" value="1" />
+                    <span>中破 0.6</span>
+                  </label>
+                  <label class="radio-item">
+                    <input type="radio" name="shipdamage" value="2" />
+                    <span>大破 0.3</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- 技能和暴击系数（同一行） -->
+              <div class="coeff-section coeff-section-row" id="coeff-skill-crit">
+                <div class="coeff-half" id="coeff-skill">
+                  <label class="coeff-title">技能攻击力系数</label>
+                  <div class="inline-input">
+                    <span>技能加成%：</span>
+                    <input id="i-skill" type="text" class="form-input small" value="0" />
+                    <span class="result-hint">→</span>
+                    <span id="lbl-i-skill-result" class="result-value">100%</span>
+                  </div>
+                </div>
+                <div class="coeff-half" id="coeff-crit">
+                  <label class="coeff-title">暴击系数</label>
+                  <div class="inline-input">
+                    <span>额外暴击伤害%：</span>
+                    <input id="i-crit" type="text" class="form-input small" value="0" />
+                    <span class="result-hint">→</span>
+                    <span id="lbl-i-crit-result" class="result-value">150%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 浮动系数 -->
+              <div class="coeff-section" id="coeff-float">
+                <label class="coeff-title">浮动系数</label>
+                <div class="inline-input">
+                  <span>当前浮动系数：</span>
+                  <span id="lbl-i-float-result" class="result-value">0.89 ~ 1.22</span>
+                </div>
+                <label class="checkbox-item">
+                  <input type="checkbox" id="use-superheavy-shell" />
+                  <span>装备了超重弹</span>
+                </label>
+              </div>
+
+              <!-- 阵形系数展示 -->
+              <div class="coeff-section" id="coeff-formation-display">
+                <label class="coeff-title">阵形系数</label>
+                <div class="coeff-badge-group">
+                  <span class="coeff-badge">单纵: <span id="i-formation-1">1.0</span></span>
+                  <span class="coeff-badge">复纵: <span id="i-formation-2">0.8</span></span>
+                  <span class="coeff-badge">轮形: <span id="i-formation-3">0.75</span></span>
+                  <span class="coeff-badge">梯形: <span id="i-formation-4">1.0</span></span>
+                  <span class="coeff-badge">单横: <span id="i-formation-5">0.8</span></span>
+                </div>
+              </div>
+
+              <!-- 航向系数展示 -->
+              <div class="coeff-section" id="coeff-direction-display">
+                <label class="coeff-title">航向系数</label>
+                <div class="coeff-badge-group">
+                  <span class="coeff-badge">T有利: <span id="i-direction-1">1.15</span></span>
+                  <span class="coeff-badge">同航战: <span id="i-direction-2">1.0</span></span>
+                  <span class="coeff-badge">反航战: <span id="i-direction-3">0.8</span></span>
+                  <span class="coeff-badge">T不利: <span id="i-direction-4">0.65</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧面板：参数和结果 -->
+        <div class="panel panel-right">
+          <!-- 其他参数 -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon">🎯</span>
+              <h3>目标参数</h3>
+            </div>
+            <div class="card-body">
+              <div class="params-grid">
+                <div class="param-item">
+                  <label>敌方装甲</label>
+                  <input id="armor" type="text" class="form-input" value="0" />
+                </div>
+                <div class="param-item">
+                  <label>敌方血量</label>
+                  <input id="enemyhp" type="text" class="form-input" value="10" />
+                </div>
+                <div class="param-item">
+                  <label>技能伤害倍率%</label>
+                  <input id="skill-mult" type="text" class="form-input" value="0" />
+                  <span class="param-result" id="lbl-skill-result">100%</span>
+                </div>
+                <div class="param-item">
+                  <label>额外穿甲系数% (当前: <span id="lbl-pene">0.6</span>)</label>
+                  <input id="pene" type="text" class="form-input" value="0" />
+                  <span class="param-result" id="lbl-pene-result">0.6</span>
+                </div>
+              </div>
+
+              <!-- 航空战减伤参数 -->
+              <div id="airstrike-params" class="airstrike-section" style="display: none;">
+                <div class="section-divider">
+                  <span>✈️ 航空战减伤参数</span>
+                </div>
+                <div class="params-grid">
+                  <div class="param-item">
+                    <label>减伤对空值</label>
+                    <input id="anti-air-value" type="number" class="form-input" value="0" />
+                    <span class="input-hint">本体对空+2.5×Σ(装备对空×防空倍率)</span>
+                  </div>
+                  <div class="param-item">
+                    <label>目标船型</label>
+                    <select id="ship-size-type" class="form-select">
+                      <option value="0">大型船 (150)</option>
+                      <option value="1">中型船 (375)</option>
+                      <option value="2">小型船 (1500)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="checkbox-row">
+                  <label class="checkbox-item">
+                    <input type="checkbox" id="is-armored-carrier" />
+                    <span>目标为装母（轰炸机额外×0.25）</span>
+                  </label>
+                </div>
+                <div class="airstrike-result">
+                  <span>减伤系数：</span>
+                  <span id="lbl-airstrike-reduction" class="result-value">1.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 计算按钮 -->
+          <button type="button" id="calculate-btn" class="btn btn-primary btn-block">
+            🚀 开始计算
+          </button>
+
+          <!-- 结果显示 -->
+          <div class="card result-card">
+            <div class="card-header">
+              <span class="card-icon">📋</span>
+              <h3>计算结果</h3>
+            </div>
+            <div class="card-body">
+              <!-- 选项卡导航 -->
+              <div class="result-tabs">
+                <button type="button" class="result-tab active" data-tab="damage">伤害值</button>
+                <button type="button" class="result-tab" data-tab="middle">中破率</button>
+                <button type="button" class="result-tab" data-tab="heavy">大破率</button>
+                <button type="button" class="result-tab" data-tab="sink">击沉率</button>
+              </div>
+              
+              <!-- 选项卡内容 -->
+              <div class="result-tab-content">
+                <div id="result-damage" class="result-tab-panel active">
+                  <div class="result-placeholder">
+                    <span class="placeholder-icon">💥</span>
+                    <p>点击计算按钮查看伤害值</p>
+                  </div>
+                </div>
+                <div id="result-middle" class="result-tab-panel">
+                  <div class="result-placeholder">
+                    <span class="placeholder-icon">⚠️</span>
+                    <p>点击计算按钮查看中破率</p>
+                  </div>
+                </div>
+                <div id="result-heavy" class="result-tab-panel">
+                  <div class="result-placeholder">
+                    <span class="placeholder-icon">🔴</span>
+                    <p>点击计算按钮查看大破率</p>
+                  </div>
+                </div>
+                <div id="result-sink" class="result-tab-panel">
+                  <div class="result-placeholder">
+                    <span class="placeholder-icon">💀</span>
+                    <p>点击计算按钮查看击沉率</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p>WSGR 计算器 v2.0 | 基于 TypeScript 重构</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // 选项卡切换逻辑
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('.result-tab');
+      const panels = document.querySelectorAll('.result-tab-panel');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const targetTab = this.getAttribute('data-tab');
+          
+          // 切换选项卡激活状态
+          tabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          // 切换面板显示
+          panels.forEach(panel => {
+            if (panel.id === 'result-' + targetTab) {
+              panel.classList.add('active');
+            } else {
+              panel.classList.remove('active');
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

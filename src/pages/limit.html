@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>属性下限计算 - WSGR 计算器</title>
+</head>
+<body>
+  <div class="app">
+    <!-- 顶部导航栏 -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-icon">⚓</span>
+          <h1>WSGR 计算器</h1>
+          <span class="version">v2.0</span>
+        </div>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">首页</a>
+          <a href="damage.html" class="nav-link">伤害计算</a>
+          <a href="limit.html" class="nav-link active">属性下限</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- 页面标题 -->
+    <div class="page-header">
+      <div class="page-header-content">
+        <h2>📊 属性下限计算器</h2>
+        <p>根据目标伤害值反推所需的最低属性值</p>
+      </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="main calculator-main">
+      <form id="calculator-form" class="calculator-layout">
+        <!-- 左侧面板：输入区域 -->
+        <div class="panel panel-left">
+          <!-- 攻击类型选择 -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon">⚙️</span>
+              <h3>攻击类型</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>选择攻击类型</label>
+                <select id="attack-type" class="form-select"></select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 公式说明 -->
+          <div class="card card-formula">
+            <div class="card-header">
+              <span class="card-icon">📐</span>
+              <h3>计算公式</h3>
+            </div>
+            <div class="card-body">
+              <div id="formula-display" class="formula-box"></div>
+              <p id="formula-explain" class="formula-explain"></p>
+            </div>
+          </div>
+
+          <!-- 目标参数 -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon">🎯</span>
+              <h3>目标参数</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>目标伤害值（敌方HP）</label>
+                  <input id="target-damage" type="number" class="form-input" value="100" placeholder="输入目标伤害" />
+                  <span class="input-hint">需要击沉敌方的HP值</span>
+                </div>
+                <div class="form-group">
+                  <label>敌方装甲值</label>
+                  <input id="armor" type="number" class="form-input" value="50" placeholder="输入装甲值" />
+                  <span class="input-hint">目标舰船的装甲</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 系数设置 -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon">⚡</span>
+              <h3>系数设置</h3>
+            </div>
+            <div class="card-body">
+              <div class="coeff-grid">
+                <div class="coeff-item">
+                  <label>暴击系数</label>
+                  <input id="coeff-crit" type="number" class="form-input form-input-sm" value="1.5" step="0.1" />
+                </div>
+                <div class="coeff-item">
+                  <label>技能系数</label>
+                  <input id="coeff-skill" type="number" class="form-input form-input-sm" value="1" step="0.1" />
+                </div>
+              </div>
+              
+              <!-- 阵形系数展示 -->
+              <div class="coeff-display-section">
+                <label class="coeff-display-title">阵形系数（根据攻击类型自动设置）</label>
+                <div id="formation-coeff-display" class="coeff-badge-group"></div>
+              </div>
+              
+              <!-- 航向系数展示 -->
+              <div class="coeff-display-section">
+                <label class="coeff-display-title">航向系数（根据攻击类型自动设置）</label>
+                <div id="direction-coeff-display" class="coeff-badge-group"></div>
+              </div>
+              
+              <p class="hint">提示: 结果会计算所有阵形和航向组合下的属性下限</p>
+            </div>
+          </div>
+
+          <!-- 计算按钮 -->
+          <div class="card card-action">
+            <button type="button" id="calculate-btn" class="btn btn-primary btn-large">
+              <span class="btn-icon">🔢</span>
+              计算属性下限
+            </button>
+          </div>
+        </div>
+
+        <!-- 右侧面板：结果区域 -->
+        <div class="panel panel-right">
+          <!-- 结果选项卡 -->
+          <div class="card card-result">
+            <div class="card-header">
+              <span class="card-icon">📋</span>
+              <h3>计算结果</h3>
+            </div>
+            <div class="card-body">
+              <!-- 选项卡导航 -->
+              <div class="result-tabs">
+                <button type="button" class="result-tab active" data-tab="normal">白字击沉</button>
+                <button type="button" class="result-tab" data-tab="crit">暴击击沉</button>
+              </div>
+              
+              <!-- 选项卡内容 -->
+              <div class="result-tab-content">
+                <div id="result-normal" class="result-tab-panel active">
+                  <div class="result-placeholder">
+                    <span class="placeholder-icon">📊</span>
+                    <p>点击计算按钮查看白字击沉所需属性下限</p>
+                  </div>
+                </div>
+                <div id="result-crit" class="result-tab-panel">
+                  <div class="result-placeholder">
+                    <span class="placeholder-icon">💥</span>
+                    <p>点击计算按钮查看暴击击沉所需属性下限</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 使用说明 -->
+          <div class="card card-help">
+            <div class="card-header">
+              <span class="card-icon">💡</span>
+              <h3>使用说明</h3>
+            </div>
+            <div class="card-body">
+              <ul class="help-list">
+                <li>
+                  <strong>目标伤害值</strong>: 敌方舰船的HP，计算器会找出击沉所需的最低属性
+                </li>
+                <li>
+                  <strong>敌方装甲值</strong>: 目标舰船的装甲属性
+                </li>
+                <li>
+                  <strong>系数设置</strong>: 可调整暴击和技能系数
+                </li>
+                <li>
+                  <strong>计算结果</strong>: 显示在不同阵形/航向组合下需要的最低属性值
+                </li>
+              </ul>
+              <div class="help-note">
+                <strong>注意:</strong> "无意义"表示在该条件下即使属性为0也能击沉，或BATK超过400仍无法击沉
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p>WSGR 伤害计算器 v2.0 | TypeScript 重构版</p>
+        <p>
+          <a href="https://github.com/huan-yp/WSGR-Damage-Calculator" target="_blank">GitHub</a>
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // 选项卡切换逻辑
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('.result-tab');
+      const panels = document.querySelectorAll('.result-tab-panel');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const targetTab = this.getAttribute('data-tab');
+          
+          // 切换选项卡激活状态
+          tabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          // 切换面板显示
+          panels.forEach(panel => {
+            if (panel.id === 'result-' + targetTab) {
+              panel.classList.add('active');
+            } else {
+              panel.classList.remove('active');
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
