@@ -17,6 +17,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     
+    # 并发控制：如果有新的 push 进来，取消正在进行的部署，避免冲突
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    
     steps:
     # 1. 检出代码
     - name: 📥 Checkout
@@ -37,13 +42,18 @@ jobs:
     - name: 🔨 Build
       run: npm run build
       
-    # 5. 部署到 GitHub Pages
+    # 5. 部署到 GitHub Pages (关键修改)
     - name: 🚀 Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist
         publish_branch: gh-pages
+        
+        # 【核心修改】开启强制孤儿分支模式
+        # 这会清空 gh-pages 的历史记录，每次部署都是一个全新的、唯一的 commit
+        force_orphan: true
+        
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
         commit_message: 'Deploy: ${{ github.event.head_commit.message }}'
@@ -52,12 +62,10 @@ jobs:
     - name: ✅ Deployment Complete
       run: |
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo "✅ 部署完成！"
+        echo "✅ 构建文件已强制推送至 gh-pages 分支 (Single Commit Mode)"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         echo ""
         echo "🌐 网站地址:"
         echo "   https://huan-yp.github.io/WSGR-Damage-Calculator/"
         echo ""
-        echo "📊 部署历史:"
-        echo "   https://github.com/${{ github.repository }}/deployments"
-        echo ""
+        echo "⚠️ 注意：GitHub Pages 自动部署通常需要 1-2 分钟生效"
