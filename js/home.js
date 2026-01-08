@@ -1,0 +1,1 @@
+(()=>{"use strict";document.addEventListener("DOMContentLoaded",()=>{console.log("WSGR Calculator v2.0 - Home Page Loaded"),document.querySelectorAll(".feature-card").forEach(e=>{e.addEventListener("mouseenter",()=>{e.classList.add("card-hover")}),e.addEventListener("mouseleave",()=>{e.classList.remove("card-hover")})})})})();
